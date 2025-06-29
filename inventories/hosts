@@ -1,0 +1,17 @@
+[all:children]
+puppetservers
+puppetnodes
+
+[puppetservers]
+puppetserver
+
+[puppetnodes]
+sys-ubu20-dev1
+sys-ubu20-dev2
+sys-ubu20-prod
+sys-ubu22-dev1
+sys-ubu22-dev2
+sys-ubu22-prod
+
+[all:vars]
+ansible_user = masum
