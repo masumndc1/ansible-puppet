@@ -20,7 +20,28 @@ root@ubu-incus:~# incus ls
 | sys-ubu24-dev1 | RUNNING | 10.187.242.99 (eth0)  |      | CONTAINER | 0         |
 +----------------+---------+-----------------------+------+-----------+-----------+
 ```
+# Inventory hosts
+Inventory host file can look like following
 
+```bash
+
+❯ cat inventories/hosts
+[all:children]
+puppetservers
+puppetnodes
+
+[puppetservers]
+puppetserver
+
+[puppetnodes]
+sys-alma9-dev1
+sys-deb12-dev1
+sys-ubu24-dev1
+
+[all:vars]
+ansible_user = masum
+
+```
 # Usages
 
 - Run puppet_server.yml to set up puppetserver.
