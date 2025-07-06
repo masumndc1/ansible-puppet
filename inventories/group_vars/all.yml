@@ -1,9 +1,41 @@
 ---
-username: masum
-public_key:
-  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDx3Qm/ZJM4rY6ZMuHg6xVawpTerD8nnz+A42P+EGAJ5iUwA0W1Z+cQ9Y8MQ6Fpm/WwjKof043dvo6nr1nbr50NLa+SU/T97rnEqUoVtq8MSpMaLkfbEoxizIUEWScz+xjaDGciTho+KebFMF0QGE5/p1qUvmhgAaXX2Yq2JmWKmqmv4UVwwAMgTdHm5ZVMIssdphajwsZOvf24+pVJDL4vv4LKckuDUVklEuHNkjem46hXLb/YXkmCkVQPgiFY6hCLXgwu9Fhd1Vug6veBGi3jIza9XWbeERDalVcGXLG1Xz5UCUHPhL8QO8hyWSYoDhsPOsxDfm4JVrG4R3BDiWGRfYj/MevSW6/U4henwGNcTSjhWmgxN6SKDKOcsysrxMZUzJqu2FqrQ46FvQH+W/dYD/US906gLOXyWZdBYSehWSBQC1ZvNo+AuaFgjQT+jZiWct1bfXOQVl89lh6Fixden+zcTMyRS3epqDDbHrkCa+G6HDSBpF+n2MTYWzNUl5U= khuddin@aair13-2QD1WG7
-  - ssh-rsa ==========NzaC1yc2EAAAADAQABAAABAQCzZSXW9xCjAr6Z5RknsvVAsKWOMKwjajmJD1vkcHtROG6OmXbgw6oY1C7sJik/hr8yMsk3D0Z8mlduEdZ6gSCM48ahlMhrJky/HEShD0dQQaAHvK7bXaKr3M6W0v/MrP90PWuqKFYDWsJdmK5Kiqv1t9tyKv4ywKK0TYs4xD+JhWth8Aw2g477V4omknMqy/Fo2Xs4bwLkbcmg4ptjD7aaGH9fDcFsvDynxKmaq4/LrtSbjE1oazGNIvuiQuysrcLRIiZidnCvMcOlD2o4Xsi5JyOIKf5AELY7eorQaQRPomqY+b2/vlvvkKKy6dHkJ12yxeV6t68Dq9iMhFWqsEyl khabir@macs-MacBook-Pro-2.local
-  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO1BdRWmJL0fFpehq0QsQ7+IchlGYRE+UDGGpvnorhuP khuddin@MacBook-Air-3.local
-dns1: 8.8.8.8
-dns2: 4.2.2.1
-gw: 192.168.244.2
+user: "masum"
+git_username: "masumndc1"
+git_repo: "puppet-control"
+puppet_server: "puppetserver"
+install_puppet7: true
+install_puppet8: false
+deb_package:
+  - tree
+  - openjdk-11-jdk
+  - python3-pip
+  - net-tools
+  - iputils-ping
+  - git
+  - vim
+  - wget
+  - gcc
+  - gpg
+  - ntp
+  - ntpdate
+  - firewalld
+  - python3-firewall
+rpm_package:
+  - epel-release
+  - tree
+  - net-tools
+  - chrony
+  - python3-libselinux
+  - python3-firewall
+  - firewalld
+  - selinux-policy
+port:
+  - "8140/tcp"
+puppet_rpm_key: "https://yum.puppet.com/RPM-GPG-KEY-puppet"
+puppet7_rpm_el8: "https://yum.puppet.com/puppet7/el/8/x86_64/puppet7-release-7.0.0-1.el8.noarch.rpm"
+puppet7_rpm_el9: "https://yum.puppet.com/puppet7/el/9/x86_64/puppet7-release-7.0.0-21.el9.noarch.rpm"
+puppet8_rpm_el9: "https://yum.puppet.com/puppet8/el/9/x86_64/puppet8-release-1.0.0-9.el9.noarch.rpm"
+puppet7_release_debian12: "https://apt.puppet.com/puppet7-release-bookworm.deb"
+puppet7_release_ubu22: "https://apt.puppet.com/puppet7-release-jammy.deb"
+puppet8_release_debian12: "https://apt.puppet.com/puppet8-release-bookworm.deb"
+puppet8_release_ubu22: "https://apt.puppet.com/puppet8-release-jammy.deb"
