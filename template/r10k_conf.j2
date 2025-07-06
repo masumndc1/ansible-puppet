@@ -17,6 +17,6 @@ git:
     {% if ansible_os_family == "Redhat" %}
     basedir: '/etc/puppetlabs/code/environments'
     {% elif ansible_os_family == "Debian" %}
-    basedir: '/etc/puppet/code/environments'
+    basedir: '/etc/puppetlabs/code/environments'
     {% endif %}
     remote: 'https://github.com/{{ git_username }}/{{ git_repo }}.git'
