@@ -7,7 +7,7 @@ install_puppet7: true
 install_puppet8: false
 deb_package:
   - tree
-  - openjdk-11-jdk
+  - openjdk-17-jdk
   - python3-pip
   - net-tools
   - iputils-ping
