@@ -105,7 +105,6 @@
       state: latest
       update_cache: yes
     when: ansible_os_family == "Debian"
-      and install_puppet7
 
   - name: Allocating 1gb ram for server in Redhat family
     lineinfile:
