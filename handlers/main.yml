@@ -3,10 +3,12 @@
   service:
     name: puppet
     state: restarted
-  when: ansible_os_family == "Redhat"
+  when: ansible_os_family == "RedHat"
+     or ansible_os_family == "Debian"
 
 - name: restart puppet server
   service:
     name: puppetserver
     state: restarted
   when: ansible_os_family == "Debian"
+     or ansible_os_family == "RedHat"
