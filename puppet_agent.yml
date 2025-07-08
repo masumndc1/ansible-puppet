@@ -1,11 +1,45 @@
-# puppet agent configuraiton on freebsd
-# here we will install puppet agent 5 as our
-# server running on centos7.0 is version of 5
+# Here we will install puppet-agent 7 or 8
 - hosts: puppetnodes
   become: true
   gather_facts: true
 
   tasks:
+  - name: Install some common packages in Redhat family
+    yum:
+      name: "{{ rpm_package }}"
+      state: present
+      update_cache: true
+    when: ansible_os_family == "RedHat"
+
+  - name: Disable SElinux
+    selinux:
+      state: disabled
+    when: ansible_os_family == "RedHat"
+
+  - name: Import puppet rpm key
+    rpm_key:
+      state: present
+      key: "{{ puppet_rpm_key }}"
+    when: ansible_os_family == "RedHat"
+
+  - name: Install puppet7 rpm in Redhat 9 family
+    yum:
+      name: "{{ puppet7_rpm_el9 }}"
+      state: present
+      update_cache: true
+    when: ansible_os_family == "RedHat"
+      and ansible_distribution_major_version |int == 9
+      and install_puppet7
+
+  - name: Install puppet8 rpm in Redhat 9 family
+    yum:
+      name: "{{ puppet8_rpm_el9 }}"
+      state: present
+      update_cache: true
+    when: ansible_os_family == "RedHat"
+      and ansible_distribution_major_version |int == 9
+      and install_puppet8
+
   - name: Install some common packages in debian family
     apt:
       name: "{{ deb_package }}"
@@ -13,55 +47,90 @@
       update_cache: true
     when: ansible_os_family == "Debian"
 
-  - name: Install some common packages in Redhat family
-    yum:
-      name: "{{ rpm_package }}"
-      state: present
-      update_cache: true
-    when: ansible_os_family == "Redhat"
-
-  - name: Install puppet agent in Debian
-    apt:
-      name: puppet
-      state: present
-      update_cache: true
+  - name: add keyring for puppet in debian family
+    get_url:
+      url: https://apt.puppet.com/keyring.gpg
+      dest: /etc/apt/trusted.gpg.d/puppet-keyring.asc
     when: ansible_os_family == "Debian"
+
+  - name: Install puppet7 release package for debian 12
+    apt:
+      deb: "{{ puppet7_release_debian12 }}"
+      state: present
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+      and ansible_distribution_major_version|int == 12
+      and install_puppet7
+
+  - name: Install puppet7 release package for ubuntu 22
+    apt:
+      deb: "{{ puppet7_release_ubu22 }}"
+      state: present
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+      and ansible_distribution_major_version|int == 22
+      and install_puppet7
+
+  - name: Install puppet8 release package for debian 12
+    apt:
+      deb: "{{ puppet8_release_debian12 }}"
+      state: present
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+      and ansible_distribution_major_version|int == 12
+      and install_puppet8
+
+  - name: puppetserver ip in host file in Redhat family
+    lineinfile:
+      path: /etc/hosts
+      line: "{{ puppet_server_ip }} puppetserver"
+    when: ( ansible_os_family == "RedHat"
+       or ansible_os_family == "Debian" )
+      and ansible_virtualization_role == 'guest'
 
   - name: Install puppet agent
-    pkgng:
-      name: puppet5
-      state: present
-    when: ansible_distribution == "FreeBSD"
-
-  - name: Enabling entry in /etc/rc.conf
-    lineinfile:
-      path: /etc/rc.conf
-      line: puppet_enable="YES"
-    when: ansible_distribution == "FreeBSD"
-
-  - name: Creating puppet.conf file for agent
-    template:
-      src: template/puppet.conf.j2
-      dest: /etc/puppet/puppet.conf
-      mode: u=rw,g=r,o=r
-    tags: temp
+    package:
+      name: [ 'puppet-agent' ]
+      state: latest
+      update_cache: yes
     when: ansible_os_family == "Debian"
-    notify:
-      - restart puppet
+       or ansible_os_family == "RedHat"
 
-  - name: Creating puppet.conf file for agent
+  - name: make puppet directory in var
+    file:
+      path: /var/lib/puppet
+      state: directory
+      mode: '0755'
+    when: ansible_os_family == "RedHat"
+       or ansible_os_family == "Debian"
+
+  - name: Settings for puppet agent configuration file
     template:
       src: template/puppet.conf.j2
-      dest: /usr/local/etc/puppet/puppet.conf
-      mode: u=rw,g=r,o=r
-    tags: temp
-    when: ansible_distribution == "FreeBSD"
+      dest: /etc/puppetlabs/puppet/puppet.conf
+    when: ansible_os_family == "RedHat"
+       or ansible_os_family == "Debian"
 
-  - name: Enable puppet agent service
+  - name: Enabling firewall ports for puppet
+    firewalld:
+      port: "{{ item }}"
+      permanent: yes
+      state: enabled
+    with_items: "{{ port }}"
+    when: ansible_os_family == "RedHat"
+       or ansible_os_family == "Debian"
+
+  - name: Enable puppet service
     service:
-      name: puppet
-      state: started
+      name: "{{ item }}"
       enabled: yes
+      state: started
+    with_items:
+      # - chronyd
+      - puppet
+      - firewalld
+    when: ansible_os_family == "RedHat"
+       or ansible_os_family == "Debian"
 
   handlers:
-    - import_tasks: handlers/main.yml
+    - import_tasks: handlers/agent.yml
