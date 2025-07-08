@@ -3,6 +3,7 @@ user: "masum"
 git_username: "masumndc1"
 git_repo: "puppet-control"
 puppet_server: "puppetserver"
+puppet_server_ip: "10.187.242.28"
 install_puppet7: true
 install_puppet8: false
 deb_package:
@@ -32,7 +33,6 @@ rpm_package:
 port:
   - "8140/tcp"
 puppet_rpm_key: "https://yum.puppet.com/RPM-GPG-KEY-puppet"
-puppet7_rpm_el8: "https://yum.puppet.com/puppet7/el/8/x86_64/puppet7-release-7.0.0-1.el8.noarch.rpm"
 puppet7_rpm_el9: "https://yum.puppet.com/puppet7/el/9/x86_64/puppet7-release-7.0.0-21.el9.noarch.rpm"
 puppet8_rpm_el9: "https://yum.puppet.com/puppet8/el/9/x86_64/puppet8-release-1.0.0-9.el9.noarch.rpm"
 puppet7_release_debian12: "https://apt.puppet.com/puppet7-release-bookworm.deb"
