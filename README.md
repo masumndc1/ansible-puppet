@@ -64,3 +64,18 @@ ansible-playbook -i inventories/hosts puppet_agent.yml
 ```bash
 ansible-playbook -i inventories/hosts deployment.yml
 ```
+
+# Cert
+List all agent certs in puppetserver and sign them.
+
+```bash
+puppetserver# puppetserver ca list --all
+
+Requested Certificates:
+sys-deb12-dev1 (SHA256)  22:9E:CE:92:9A:CE:E4:E5:61:8F:F5:1F:C1:A3:
+               :67:D6:E2:5B:09:01:DB:7A:15:88:34:E6:F4:FB:5B:71:C7
+
+puppetserver# puppetserver ca sign --all
+Successfully signed certificate request for sys-deb12-dev1
+
+```
