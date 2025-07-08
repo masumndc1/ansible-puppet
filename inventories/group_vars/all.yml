@@ -23,6 +23,7 @@ deb_package:
   - python3-firewall
 rpm_package:
   - epel-release
+  - vim
   - tree
   - net-tools
   - chrony
