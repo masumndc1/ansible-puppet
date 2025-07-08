@@ -5,16 +5,16 @@
   gather_facts: true
 
   tasks:
-  - name: Disable SElinux
-    selinux:
-      state: disabled
-    when: ansible_os_family == "RedHat"
-
   - name: Install required packages in Redhat family
     yum:
       name: "{{ rpm_package }}"
       state: latest
       update_cache: true
+    when: ansible_os_family == "RedHat"
+
+  - name: Disable SElinux
+    selinux:
+      state: disabled
     when: ansible_os_family == "RedHat"
 
   - name: Import puppet rpm key
@@ -23,32 +23,41 @@
       key: "{{ puppet_rpm_key }}"
     when: ansible_os_family == "RedHat"
 
-  - name: Install puppet7 rpm in Redhat 8 family
+  - name: Install puppet7 rpm in Redhat 9 family
     yum:
-      name: "{{ puppet7_rpm_el8 }}"
+      name: "{{ puppet7_rpm_el9 }}"
       state: present
       update_cache: true
     when: ansible_os_family == "RedHat"
-      and ansible_distribution_major_version |int == 8
+      and ansible_distribution_major_version |int == 9
       and install_puppet7
 
-  - name: Install puppet7-agent Redhat 8 family
+  - name: Install puppet8 rpm in Redhat 9 family
     yum:
-      name: puppet-agent
+      name: "{{ puppet8_rpm_el9 }}"
       state: present
       update_cache: true
     when: ansible_os_family == "RedHat"
-      and ansible_distribution_major_version |int == 8
+      and ansible_distribution_major_version |int == 9
+      and install_puppet8
+
+  - name: Install puppet7 server in Redhat 9 family
+    yum:
+      name: "{{ puppet7_server_el9 }}"
+      state: present
+      update_cache: true
+    when: ansible_os_family == "RedHat"
+      and ansible_distribution_major_version |int == 9
       and install_puppet7
 
-  - name: Install puppet7-server Redhat 8 family
+  - name: Install puppet8 server in Redhat 9 family
     yum:
-      name: "{{ puppet7_server_el8 }}"
+      name: "{{ puppet8_server_el9 }}"
       state: present
       update_cache: true
     when: ansible_os_family == "RedHat"
-      and ansible_distribution_major_version |int == 8
-      and install_puppet7
+      and ansible_distribution_major_version |int == 9
+      and install_puppet8
 
   - name: add keyring for puppet in debian family
     get_url:
@@ -106,12 +115,12 @@
       update_cache: yes
     when: ansible_os_family == "Debian"
 
-  - name: Allocating 1gb ram for server in Redhat family
+  - name: Allocating 512m ram for server in Redhat family
     lineinfile:
       path: /etc/sysconfig/puppetserver
       regexp: "{{ java_orig_args }}"
-      line: "{{ java_replace_args_1g }}"
-    when: ansible_os_family == "Redhat"
+      line: "{{ java_replace_args_512m }}"
+    when: ansible_os_family == "RedHat"
       and ansible_virtualization_role == 'guest'
 
   - name: Set 512mb of ram to puppet in Debian
@@ -122,12 +131,20 @@
     when: ansible_os_family == "Debian"
       and ansible_virtualization_role == 'guest'
 
+  - name: make puppet directory in var
+    file:
+      path: /var/lib/puppet
+      state: directory
+      mode: '0755'
+    when: ansible_os_family == "RedHat"
+
   - name: Make environment directory for all env
     file:
       path: /etc/puppetlabs/code/environments
       state: directory
       mode: '0755'
     when: ansible_os_family == "Debian"
+       or ansible_os_family == "RedHat"
 
   - name: Make devel directory for devel env
     file:
@@ -135,6 +152,7 @@
       state: directory
       mode: '0755'
     when: ansible_os_family == "Debian"
+       or ansible_os_family == "RedHat"
 
   - name: Make production directory for prod env
     file:
@@ -179,14 +197,23 @@
       - firewalld
     when: ansible_os_family == "Debian"
 
+  - name: puppetserver ip in host file in Redhat family
+    lineinfile:
+      path: /etc/hosts
+      line: "{{ puppet_server_ip }} puppetserver"
+    when: ansible_os_family == "RedHat"
+      and ansible_virtualization_role == 'guest'
+
   - name: Enable ntp and puppetserver service
     service:
       name: "{{ item }}"
       enabled: yes
       state: started
     with_items:
-      - chronyd
+      # - chronyd
       - puppet
+      - puppetserver
+      - firewalld
     when: ansible_os_family == "RedHat"
 
   handlers:
