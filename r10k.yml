@@ -6,18 +6,29 @@
   gather_facts: yes
 
   tasks:
-  - name: install r10k by rubygem in Redhat
-    command: /opt/puppetlabs/puppet/bin/gem install r10k
-    tags: r10k_install
-    when: ansible_os_family == "Redhat"
+  - name: Create r10k directory
+    file:
+      path: /etc/puppetlabs/r10k
+      state: directory
+      mode: '0644'
+      owner: puppet
+      group: puppet
+    when: ansible_os_family == "RedHat"
 
   - name: Place r10k configuration file in Redhat
     template:
       src: template/r10k_conf.j2
       dest: /etc/puppetlabs/r10k/r10k.yml
       mode: '0644'
+      owner: puppet
+      group: puppet
     tags: r10k_template
-    when: ansible_os_family == "Redhat"
+    when: ansible_os_family == "RedHat"
+
+  - name: install r10k by rubygem in Redhat
+    command: /opt/puppetlabs/puppet/bin/gem install r10k -v 4.0.2
+    tags: r10k_install
+    when: ansible_os_family == "RedHat"
 
   - name: install r10k in Debian
     apt:
@@ -32,5 +43,7 @@
       src: template/r10k_conf.j2
       dest: /etc/r10k.yml
       mode: '0644'
+      owner: puppet
+      group: puppet
     tags: r10k_template
     when: ansible_os_family == "Debian"
