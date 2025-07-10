@@ -170,13 +170,14 @@
     when: ansible_os_family == "RedHat"
        or ansible_os_family == "Debian"
 
-  - name: Settings for hieradata yaml conf in Debian
+  - name: Settings for hieradata yaml conf
     template:
       src: template/hiera.yaml.j2
       dest: /etc/puppetlabs/puppet/hiera.yaml
       owner: puppet
       group: puppet
     when: ansible_os_family == "Debian"
+       or ansible_os_family == "RedHat"
     notify:
       - restart puppet server
 
