@@ -60,12 +60,7 @@ ansible-playbook -i inventories/hosts r10k.yml
 ansible-playbook -i inventories/hosts puppet_agent.yml
 ```
 
-- Run r10k.yml to install r10k in puppetserver.
-```bash
-ansible-playbook -i inventories/hosts r10k.yml
-```
-
-- Run deployment.yml to deploy environment in agent nodes.
+- Run deployment.yml to deploy environment in puppetserver.
 ```bash
 ansible-playbook -i inventories/hosts deployment.yml
 ```
