@@ -79,3 +79,34 @@ puppetserver# puppetserver ca sign --all
 Successfully signed certificate request for sys-deb12-dev1
 
 ```
+
+# example
+following command should be run as root on puppetnodes.
+
+```bash
+[root@sys-alma9-dev1 masum]# puppet agent -t
+Info: Using environment 'devel'
+Info: Retrieving pluginfacts
+Info: Retrieving plugin
+Info: Loading facts
+Notice: Requesting catalog from puppetserver:8140 (10.187.242.28)
+Notice: Catalog compiled by puppetserver.incus
+Info: Caching catalog for sys-alma9-dev1
+Info: Applying configuration version '1752186184'
+Notice: f540c83f3249b8d8845b4e894f73ab48
+Notice: /Stage[main]/Infra::Hostname/Notify[MD5_hash]/message: defined 'message' as 'f540c83f3249b8d8845b4e894f73ab48'
+Notice:
+    The MD5 hash for the node name is
+    f540c83f3249b8d8845b4e894f73ab48
+    and os is RedHat
+
+Notice: /Stage[main]/Infra::Hostname/Notify[nodename_hash]/message: defined 'message' as "\n    The MD5 hash for the node name is\n    f540c83f3249b8d8845b4e894f73ab48\n    and os is RedHat\n"
+Notice: khabir added
+Notice: /Stage[main]/Infra::Sudo/Notify[khabir]/message: defined 'message' as 'khabir added'
+Notice: Custom message from infra!
+Notice: /Stage[main]/Infra::Messages/Notify[say_something]/message: defined 'message' as 'Custom message from infra!'
+Notice: Applied catalog in 0.46 seconds
+[root@sys-alma9-dev1 masum]#
+
+```
+
