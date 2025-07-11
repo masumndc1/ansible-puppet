@@ -1,5 +1,5 @@
-# ansible-role-puppet
-Ansible role to install puppetserver and puppet-agent in nodes in AlmaLinux,
+# ansible-puppet
+Ansible playbooks to install puppetserver and puppet-agent in AlmaLinux,
 Debian and Ubuntu.
 
 # infra
