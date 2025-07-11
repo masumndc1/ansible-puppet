@@ -12,3 +12,10 @@
     state: restarted
   when: ansible_os_family == "Debian"
      or ansible_os_family == "RedHat"
+
+- name: restart firewalld
+  service:
+    name: firewalld
+    state: restarted
+  when: ansible_os_family == "Debian"
+     or ansible_os_family == "RedHat"
