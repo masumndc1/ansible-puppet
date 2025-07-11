@@ -66,19 +66,27 @@ ansible-playbook -i inventories/hosts deployment.yml
 ```
 
 # Cert
-List all agent certs in puppetserver and sign them.
+List all agent certs in puppetserver and sign them. In AlmaLinux9 or
+Ubuntu22, run following.
 
 ```bash
-puppetserver# puppetserver ca list --all
+puppetserver# /opt/puppetlabs/bin/puppetserver ca list --all
 
 Requested Certificates:
 sys-deb12-dev1 (SHA256)  22:9E:CE:92:9A:CE:E4:E5:61:8F:F5:1F:C1:A3:
                :67:D6:E2:5B:09:01:DB:7A:15:88:34:E6:F4:FB:5B:71:C7
 
-puppetserver# puppetserver ca sign --all
+puppetserver# /opt/puppetlabs/bin/puppetserver ca sign --all
 Successfully signed certificate request for sys-deb12-dev1
 
 ```
+
+In debian 12, puppetserver command can be found under
+
+```bash
+/opt/puppetlabs/server/bin/puppetserver ca list --all
+```
+
 
 # example
 following command should be run as root on puppetnodes.
