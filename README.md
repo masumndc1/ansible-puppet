@@ -17,7 +17,7 @@ root@ubu-incus:~# incus ls
 +----------------+---------+-----------------------+------+-----------+-----------+
 | sys-deb12-dev1 | RUNNING | 10.187.242.18 (eth0)  |      | CONTAINER | 0         |
 +----------------+---------+-----------------------+------+-----------+-----------+
-| sys-ubu24-dev1 | RUNNING | 10.187.242.99 (eth0)  |      | CONTAINER | 0         |
+| sys-ubu22-dev1 | RUNNING | 10.187.242.99 (eth0)  |      | CONTAINER | 0         |
 +----------------+---------+-----------------------+------+-----------+-----------+
 ```
 
@@ -37,7 +37,7 @@ puppetserver
 [puppetnodes]
 sys-alma9-dev1
 sys-deb12-dev1
-sys-ubu24-dev1
+sys-ubu22-dev1
 
 [all:vars]
 ansible_user = masum
