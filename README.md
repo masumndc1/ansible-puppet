@@ -121,7 +121,7 @@ Notice: Applied catalog in 0.46 seconds
 
 ```
 
-# clear cert
+# clear cert (careful)
 From puppetserver and puppetnodes: clear pem file from following.
 
 ```bash
