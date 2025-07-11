@@ -113,3 +113,10 @@ Notice: Applied catalog in 0.46 seconds
 
 ```
 
+# clear cert
+From puppetserver and puppetnodes: clear pem file from following.
+
+```bash
+find /var/lib/puppet/ssl -name '*.pem' -delete
+find /var/lib/puppet/ssl/certs -name '*.pem' -delete
+```
