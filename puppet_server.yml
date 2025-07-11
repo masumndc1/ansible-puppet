@@ -136,7 +136,20 @@
       path: /var/lib/puppet
       state: directory
       mode: '0755'
+      owner: puppet
+      group: puppet
     when: ansible_os_family == "RedHat"
+       or ansible_os_family == "Debian"
+
+  - name: make puppet ssl directory in var
+    file:
+      path: /var/lib/puppet/ssl
+      state: directory
+      mode: '0755'
+      owner: puppet
+      group: puppet
+    when: ansible_os_family == "RedHat"
+       or ansible_os_family == "Debian"
 
   - name: Make environment directory for all env
     file:
@@ -186,17 +199,7 @@
       src: template/puppet.conf.j2
       dest: /etc/puppetlabs/puppet/puppet.conf
     when: ansible_os_family == "RedHat"
-
-  - name: Enable ntp and puppetserver service
-    service:
-      name: "{{ item }}"
-      enabled: yes
-      state: started
-    with_items:
-      - ntp
-      - puppetserver
-      - firewalld
-    when: ansible_os_family == "Debian"
+       or ansible_os_family == "Debian"
 
   - name: puppetserver ip in host file in Redhat family
     lineinfile:
@@ -206,11 +209,22 @@
        or ansible_os_family == "Debian" )
       and ansible_virtualization_role == 'guest'
 
-  - name: Enable ntp and puppetserver service
+  - name: Restart puppetserver and related services in Debian
     service:
       name: "{{ item }}"
       enabled: yes
-      state: started
+      state: restarted
+    with_items:
+      - ntp
+      - puppetserver
+      - firewalld
+    when: ansible_os_family == "Debian"
+
+  - name: Restart puppetserver and related services in RedHat
+    service:
+      name: "{{ item }}"
+      enabled: yes
+      state: restarted
     with_items:
       # - chronyd
       - puppet
