@@ -123,6 +123,8 @@ Notice: Applied catalog in 0.46 seconds
 
 # clear cert (careful)
 From puppetserver and puppetnodes: clear pem file from following.
+This is important when puppetserver or node has been re-installed.
+(Be careful. At least you should know what you are doing)
 
 ```bash
 find /var/lib/puppet/ssl -name '*.pem' -delete
