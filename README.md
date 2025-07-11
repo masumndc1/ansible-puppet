@@ -62,7 +62,7 @@ ansible-playbook -i inventories/hosts puppet_agent.yml
 
 - Run deployment.yml to deploy environment in puppetserver.
 ```bash
-ansible-playbook -i inventories/hosts deployment.yml
+ansible-playbook -i inventories/hosts deployment.yml -e "env=devel"
 ```
 
 # Cert
